@@ -404,7 +404,7 @@ function resetHTMLFile() {
     <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Liri</title>
+        <title>LIRI</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://fonts.googleapis.com/css?family=Dancing+Script|Playfair+Display" rel="stylesheet">
         <!-- Added a link to Bootstrap-->

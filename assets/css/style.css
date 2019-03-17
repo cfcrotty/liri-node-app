@@ -54,10 +54,10 @@ p {
     padding: 2rem 2rem;
     /*background: url('../images/gems3.jpg') no-repeat center center fixed;
     background-size: 100% 100%;*/
-    background-image: url('../images/FILE0600.JPG');
+    background-image: url('../images/bg1.JPG');
     background-size: cover;
     background-position-x: 0px;
-    background-position-y: -460px;
+    background-position-y: -350px;
     position: relative;
     z-index: 3;
 }
