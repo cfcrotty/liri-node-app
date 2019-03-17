@@ -119,8 +119,21 @@ function showArtistEvents(val) {
                 htmlStr += `</div>`;
                 htmlStr += `</div>`;
             }
-            console.log("You can open an HTML using this: "+(__dirname)+"/index.html");
-            createHTMLFile(htmlStr,"Events for "+artist);
+            createHTMLFile(htmlStr, "Events for " + artist);
+            console.log("***********************************************************************************************************************");
+            console.log("*** You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***");
+            console.log("***********************************************************************************************************************");
+            
+            const { exec } = require('child_process');
+            exec('open ' + (__dirname) + "/index.html", (err, stdout, stderr) => {
+                if (err) {
+                    // node couldn't execute the command
+                    return;
+                }
+                // the *entire* stdout and stderr (buffered)
+                console.log(`stdout: ${stdout}`);
+                console.log(`stderr: ${stderr}`);
+            });
         } else {
             console.log("Sorry! No result found.");
         }
@@ -169,7 +182,7 @@ function showSpotifySong(val) {
                     str += artist[a].name;
                     if (a != size1 - 1) str += ", ";
                 }
-                console.log("Artist/s: "+str);
+                console.log("Artist/s: " + str);
                 console.log("Song Name: " + res[i].name);
                 console.log("Spotify URL: " + res[i].external_urls.spotify);
                 console.log("Preview: " + res[i].preview_url);
@@ -202,8 +215,21 @@ function showSpotifySong(val) {
                 htmlStr += `</div>`;
                 htmlStr += `</div>`;
             }
-            console.log("You can open an HTML using this: "+(__dirname)+"/index.html");
-            createHTMLFile(htmlStr,"Tracks for "+song);
+            createHTMLFile(htmlStr, "Tracks for " + song);
+            console.log("***********************************************************************************************************************");
+            console.log("*** You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***");
+            console.log("***********************************************************************************************************************");
+
+            const { exec } = require('child_process');
+            exec('open ' + (__dirname) + "/index.html", (err, stdout, stderr) => {
+                if (err) {
+                    // node couldn't execute the command
+                    return;
+                }
+                // the *entire* stdout and stderr (buffered)
+                console.log(`stdout: ${stdout}`);
+                console.log(`stderr: ${stderr}`);
+            });
         } else {
             console.log("Sorry! No result found.");
         }
@@ -283,8 +309,21 @@ function showMovieData(val) {
             htmlStr += `</div>`;
             htmlStr += `</div>`;
             htmlStr += `</div>`;
-            console.log("You can open an HTML using this: "+(__dirname)+"/index.html");
-            createHTMLFile(htmlStr,"Movie Data for "+response.data.Title);
+            createHTMLFile(htmlStr, "Movie Data for " + response.data.Title);
+            console.log("***********************************************************************************************************************");
+            console.log("*** You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***");
+            console.log("***********************************************************************************************************************");
+            
+            const { exec } = require('child_process');
+            exec('open ' + (__dirname) + "/index.html", (err, stdout, stderr) => {
+                if (err) {
+                    // node couldn't execute the command
+                    return;
+                }
+                // the *entire* stdout and stderr (buffered)
+                console.log(`stdout: ${stdout}`);
+                console.log(`stderr: ${stderr}`);
+            });
         } else {
             console.log("Sorry! No result found.");
         }
@@ -347,9 +386,9 @@ function showRandomTextResult() {
  * @param {string} input 
  */
 function logCommands(command, input) {
-    fs.appendFile("log.txt", command+" "+input+", ", function (err) {
+    fs.appendFile("log.txt", command + " " + input + ", ", function (err) {
         if (err) {
-            console.log("Error: "+err);
+            console.log("Error: " + err);
         } else {
             //console.log("Command logged.");
         }
@@ -359,7 +398,7 @@ function logCommands(command, input) {
 /**
  * Function to reset/insert initial data in index.html
  */
-function resetHTMLFile(){
+function resetHTMLFile() {
     var htmlStr = "";
     htmlStr += `<!DOCTYPE html>
     <html lang="en">
@@ -373,12 +412,12 @@ function resetHTMLFile(){
         <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     </head>
     <body>`;
-    fs.writeFile("index.html", htmlStr, function(err) {
+    fs.writeFile("index.html", htmlStr, function (err) {
         if (err) {
-          return console.log("Error: "+err);
+            return console.log("Error: " + err);
         }
         //console.log("HTML file reset");
-      });
+    });
 }
 
 /**
@@ -386,7 +425,7 @@ function resetHTMLFile(){
  * @param {string} data 
  * @param {string} title 
  */
-function createHTMLFile(data,title){
+function createHTMLFile(data, title) {
     var str = `<div class="jumbotron">
                 <h1 class="text-center big">${title}</h1>
                 </div>
@@ -400,7 +439,7 @@ function createHTMLFile(data,title){
 
     fs.appendFile("index.html", str, function (err) {
         if (err) {
-            console.log("Error: "+err);
+            console.log("Error: " + err);
         } else {
             //console.log("Command logged.");
         }
