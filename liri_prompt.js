@@ -401,3 +401,30 @@ function openResultPage() {
         //console.log(`stderr: ${stderr}`);
     });
 }
+
+var inquirer = require('inquirer');
+var standard_input = process.stdin;
+standard_input.setEncoding('utf-8');
+console.log("Please select option: [c]concert-this [s]spotify-this-song [m]movie-this [w]do-what-it-says");
+standard_input.on('data', function (data) {
+    console.log('User Input Data : ' + data);
+    //process.exit();
+    console.log("Please enter ");
+    standard_input.on('data', function (data) {
+        console.log('User Input Data : ' + data);
+        process.exit();
+    });
+});
+
+/*
+var readline = require('readline');
+var rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  terminal: false
+});
+
+rl.on('line', function(line){
+    console.log(line);
+})
+*/
