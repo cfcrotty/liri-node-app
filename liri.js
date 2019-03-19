@@ -5,33 +5,72 @@ var moment = require('moment');
 var fs = require("fs");
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
+var inquirer = require('inquirer');
 var colors = require('colors');
 
-//create variables
-var command = process.argv[2];
-var input = process.argv.slice(3).join(" ");
 
+//create variables
+//var command = process.argv[2];
+//var input = process.argv.slice(3).join(" ");
+
+inquirer.prompt([
+    {
+        type: "list",
+        message: "What is your command?".red.italic.bold,
+        choices: ["concert-this", "spotify-this-song", "movie-this", "do-what-it-says"],
+        name: "command",
+        /*
+        validate: function (res) {
+            if (res === "concert-this" || res === "spotify-this-song" || res === "movie-this" || res === "do-what-it-says") {
+                return true;
+            } else {
+                return "Please enter a correct command.".red;
+            }
+        }
+        */
+    },
+    {
+        type: "input",
+        name: 'input',
+        message: function (prev) {
+            if (prev.command === "concert-this") {
+                return "Please enter the artist/band name: ".blue.italic;
+            } else if (prev.command === "spotify-this-song") {
+                return "Please enter the song name: ".blue.italic;
+            } else if (prev.command === "movie-this") {
+                return "Please enter the movie name: ".blue.italic;
+            }else if (prev.command === "do-what-it-says") {
+                return "Press enter to continue.".blue.italic;
+            }
+        }
+    },
+]).then(function (inquirerResponse) {
+    var input = inquirerResponse.input ? inquirerResponse.input : "";
+    switchCommands(inquirerResponse.command,input);
+});
 
 //create switch for each commands
-switch (command) {
-    case "concert-this":
-        logCommands(command, input);
-        showArtistEvents();
-        break;
-    case "spotify-this-song":
-        logCommands(command, input);
-        showSpotifySong();
-        break;
-    case "movie-this":
-        logCommands(command, input);
-        showMovieData();
-        break;
-    case "do-what-it-says":
-        logCommands(command, input);
-        showRandomTextResult();
-        break;
-    default:
-        console.log("Command you entered is not recognized.");
+function switchCommands(command,input) {
+    switch (command) {
+        case "concert-this":
+            logCommands(command, input);
+            showArtistEvents(input);
+            break;
+        case "spotify-this-song":
+            logCommands(command, input);
+            showSpotifySong(input);
+            break;
+        case "movie-this":
+            logCommands(command, input);
+            showMovieData(input);
+            break;
+        case "do-what-it-says":
+            logCommands(command);
+            showRandomTextResult();
+            break;
+        default:
+            console.log("Command you entered is not recognized.");
+    }
 }
 
 //create fucntions for each commands
@@ -47,23 +86,22 @@ function showArtistEvents(val) {
     resetHTMLFile();
     var htmlStr = "";
     var artist = "BlackPink";
-    if (input) artist = input;
-    else if (val) artist = val;
+    if (val) artist = val;
     var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
     axios.get(queryUrl).then(function (response) {
         //console.log(response);
         var size = Object.keys(response.data).length;
-        if (size > 0) {
+        if (size > 0 && Array.isArray(response.data)) {
             console.log("_________________________________________________________________".red);
             var res = response.data;
             for (var i = 0; i < size; i++) {
                 console.log("_________________________________________________________________".blue);
-                console.log("Artist/Band Name: ".green + artist.yellow);
-                console.log("Venue: ".green + res[i].venue.name);
-                var address = "Address: ".green + res[i].venue.city + ", " + res[i].venue.region + ", " + res[i].venue.country;
-                console.log(address);
+                console.log("Artist/Band Name: ".green.italic.bold + artist.yellow);
+                console.log("Venue: ".green.italic.bold + res[i].venue.name);
+                var address = res[i].venue.city + ", " + res[i].venue.region + ", " + res[i].venue.country;
+                console.log("Address: ".green.italic.bold + address);
                 var date = res[i].datetime;
-                console.log("Date: ".green + moment(date.slice(0, date.indexOf("T"))).format("MM/DD/YYYY"));
+                console.log("Date: ".green.italic.bold + moment(date.slice(0, date.indexOf("T"))).format("MM/DD/YYYY"));
                 console.log("_________________________________________________________________".blue);
 
                 //data used for creating HTML page
@@ -91,7 +129,7 @@ function showArtistEvents(val) {
             console.log("_________________________________________________________________".red);
             createHTMLFile(htmlStr, "Events for " + artist);
             console.log("***********************************************************************************************************************".green);
-            console.log("***".yellow+" You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***".yellow);
+            console.log("***".yellow + " You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***".yellow);
             console.log("***********************************************************************************************************************".green);
             console.log();
         } else {
@@ -125,12 +163,11 @@ function showSpotifySong(val) {
     resetHTMLFile();
     var htmlStr = "";
     var song = "The Sign";
-    if (input) song = input;
-    else if (val) song = val;
+    if (val) song = val;
     spotify.search({ type: 'track', query: song }).then(function (response) {
         //console.log(data);
         var size = Object.keys(response.tracks.items).length;
-        if (size > 0) {
+        if (size > 0 && Array.isArray(response.tracks.items)) {
             console.log("_____________________________________________________________________________________________________________________".red);
             var res = response.tracks.items;
             for (var i = 0; i < size; i++) {
@@ -143,11 +180,11 @@ function showSpotifySong(val) {
                     str += artist[a].name;
                     if (a != size1 - 1) str += ", ";
                 }
-                console.log("Artist/s: ".green + str);
-                console.log("Song Name: ".green + res[i].name.yellow);
-                console.log("Spotify URL: ".green + res[i].external_urls.spotify);
-                console.log("Preview: ".green + res[i].preview_url);
-                console.log("Album Name: ".green + res[i].album.name);
+                console.log("Artist/s: ".green.italic.bold + str);
+                console.log("Song Name: ".green.italic.bold + res[i].name.yellow);
+                console.log("Spotify URL: ".green.italic.bold + res[i].external_urls.spotify);
+                console.log("Preview: ".green.italic.bold + res[i].preview_url);
+                console.log("Album Name: ".green.italic.bold + res[i].album.name);
                 console.log("_____________________________________________________________________________________________________________________".blue);
 
                 //data used for creating HTML page
@@ -179,7 +216,7 @@ function showSpotifySong(val) {
             console.log("_____________________________________________________________________________________________________________________".red);
             createHTMLFile(htmlStr, "Tracks for " + song);
             console.log("***********************************************************************************************************************".green);
-            console.log("***".yellow+" You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***".yellow);
+            console.log("***".yellow + " You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***".yellow);
             console.log("***********************************************************************************************************************".green);
             console.log();
         } else {
@@ -202,27 +239,26 @@ function showMovieData(val) {
     resetHTMLFile();
     var htmlStr = "";
     var movie = "Mr. Nobody";
-    if (input) movie = input;
-    else if (val) movie = val;
+    if (val) movie = val;
     var queryUrl = "http://www.omdbapi.com/?apikey=trilogy&t=" + movie;
     axios.get(queryUrl).then(function (response) {
         //console.log(response);
         var size = Object.keys(response.data).length;
-        if (size > 0) {
+        if (size > 0 && response.data.Title) {
             console.log("_____________________________________________________________________________________________________________________".red);
             console.log("_____________________________________________________________________________________________________________________".blue);
-            console.log("Movie Title: ".green + response.data.Title.yellow);
-            console.log("Year: ".green + response.data.Year);
-            console.log("IMDB Rating: ".green + response.data.imdbRating);
+            console.log("Movie Title: ".green.italic.bold + response.data.Title.yellow);
+            console.log("Year: ".green.italic.bold + response.data.Year);
+            console.log("IMDB Rating: ".green.italic.bold + response.data.imdbRating);
             var rt = response.data.Ratings;
             var result = rt.find(obj => {
                 return obj.Source === "Rotten Tomatoes";
             })
-            console.log("Rotten Tomatoes Rating: ".green + result.Value);
-            console.log("Produced in Country(s): ".green + response.data.Country);
-            console.log("Language: ".green + response.data.Language);
-            console.log("Plot: ".green + response.data.Plot);
-            console.log("Actors: ".green + response.data.Actors);
+            console.log("Rotten Tomatoes Rating: ".green.italic.bold + result.Value);
+            console.log("Produced in Country(s): ".green.italic.bold + response.data.Country);
+            console.log("Language: ".green.italic.bold + response.data.Language);
+            console.log("Plot: ".green.italic.bold + response.data.Plot);
+            console.log("Actors: ".green.italic.bold + response.data.Actors);
             console.log("_____________________________________________________________________________________________________________________".blue);
             console.log("_____________________________________________________________________________________________________________________".red);
 
@@ -265,7 +301,7 @@ function showMovieData(val) {
             htmlStr += `</div>`;
             createHTMLFile(htmlStr, "Movie Data for " + response.data.Title);
             console.log("***********************************************************************************************************************".green);
-            console.log("***".yellow+" You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***".yellow);
+            console.log("***".yellow + " You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***".yellow);
             console.log("***********************************************************************************************************************".green);
             console.log();
         } else {
@@ -406,3 +442,59 @@ function openResultPage() {
         //console.log(`stderr: ${stderr}`);
     });
 }
+
+//getAddressByLatLong("33.7205556","-116.2147222");
+/**
+ * Funtion to get address by latitude & longitude
+ * @param {number/string} lat - latitude
+ * @param {number/string} long - longitude
+ * @param {function} callback - callback function to call when a response is received
+ */
+function getAddressByLatLong(lat, long, callback) {
+    var queryUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyDs3kB9GH643iw3aYL1egJilXsG0L39HFo";
+    axios.get(queryUrl).then(function (response) {
+        console.log(response.data.results[0].formatted_address);
+        callback(response.data.results[0].formatted_address);
+    },
+        function (error) {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else if (error.request) {
+                console.log(error.request);
+            } else {
+                console.log("Error", error.message);
+            }
+            console.log(error.config);
+        }
+    );
+}
+
+
+/*
+
+var standard_input = process.stdin;
+standard_input.setEncoding('utf-8');
+console.log("Please select option: [c]concert-this [s]spotify-this-song [m]movie-this [w]do-what-it-says");
+standard_input.on('data', function (data) {
+    console.log('User Input Data : ' + data);
+    //process.exit();
+    console.log("Please enter ");
+    standard_input.on('data', function (data) {
+        console.log('User Input Data : ' + data);
+        process.exit();
+    });
+});
+
+var readline = require('readline');
+var rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+  terminal: false
+});
+
+rl.on('line', function(line){
+    console.log(line);
+})
+*/
