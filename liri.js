@@ -97,11 +97,11 @@ function showArtistEvents(val) {
             for (var i = 0; i < size; i++) {
                 console.log("_________________________________________________________________".blue);
                 console.log("Artist/Band Name: ".green.italic.bold + artist.yellow);
-                console.log("Venue: ".green.italic.bold + res[i].venue.name);
+                console.log("           Venue: ".green.italic.bold + res[i].venue.name);
                 var address = res[i].venue.city + ", " + res[i].venue.region + ", " + res[i].venue.country;
-                console.log("Address: ".green.italic.bold + address);
+                console.log("         Address: ".green.italic.bold + address);
                 var date = res[i].datetime;
-                console.log("Date: ".green.italic.bold + moment(date.slice(0, date.indexOf("T"))).format("MM/DD/YYYY"));
+                console.log("            Date: ".green.italic.bold + moment(date.slice(0, date.indexOf("T"))).format("MM/DD/YYYY"));
                 console.log("_________________________________________________________________".blue);
 
                 //data used for creating HTML page
@@ -180,11 +180,11 @@ function showSpotifySong(val) {
                     str += artist[a].name;
                     if (a != size1 - 1) str += ", ";
                 }
-                console.log("Artist/s: ".green.italic.bold + str);
-                console.log("Song Name: ".green.italic.bold + res[i].name.yellow);
+                console.log("   Artist/s: ".green.italic.bold + str);
+                console.log("  Song Name: ".green.italic.bold + res[i].name.yellow);
                 console.log("Spotify URL: ".green.italic.bold + res[i].external_urls.spotify);
-                console.log("Preview: ".green.italic.bold + res[i].preview_url);
-                console.log("Album Name: ".green.italic.bold + res[i].album.name);
+                console.log("    Preview: ".green.italic.bold + res[i].preview_url);
+                console.log(" Album Name: ".green.italic.bold + res[i].album.name);
                 console.log("_____________________________________________________________________________________________________________________".blue);
 
                 //data used for creating HTML page
@@ -247,18 +247,18 @@ function showMovieData(val) {
         if (size > 0 && response.data.Title) {
             console.log("_____________________________________________________________________________________________________________________".red);
             console.log("_____________________________________________________________________________________________________________________".blue);
-            console.log("Movie Title: ".green.italic.bold + response.data.Title.yellow);
-            console.log("Year: ".green.italic.bold + response.data.Year);
-            console.log("IMDB Rating: ".green.italic.bold + response.data.imdbRating);
+            console.log("           Movie Title: ".green.italic.bold + response.data.Title.yellow);
+            console.log("                  Year: ".green.italic.bold + response.data.Year);
+            console.log("           IMDB Rating: ".green.italic.bold + response.data.imdbRating);
             var rt = response.data.Ratings;
             var result = rt.find(obj => {
                 return obj.Source === "Rotten Tomatoes";
             })
             console.log("Rotten Tomatoes Rating: ".green.italic.bold + result.Value);
             console.log("Produced in Country(s): ".green.italic.bold + response.data.Country);
-            console.log("Language: ".green.italic.bold + response.data.Language);
-            console.log("Plot: ".green.italic.bold + response.data.Plot);
-            console.log("Actors: ".green.italic.bold + response.data.Actors);
+            console.log("              Language: ".green.italic.bold + response.data.Language);
+            console.log("                  Plot: ".green.italic.bold + response.data.Plot);
+            console.log("                Actors: ".green.italic.bold + response.data.Actors);
             console.log("_____________________________________________________________________________________________________________________".blue);
             console.log("_____________________________________________________________________________________________________________________".red);
 
