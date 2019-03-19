@@ -5,19 +5,13 @@ var moment = require('moment');
 var fs = require("fs");
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
+var colors = require('colors');
 
 //create variables
 var command = process.argv[2];
-var input = process.argv.slice(2).join(" ");
-/*
-for (var i = 0; i < process.argv.length; i++) { //loops through the process.argv
-    if (i > 2) { //if index is greater than 2(which is after the command)
-        input += process.argv[i]; //append each word
-        if (i != (process.argv.length) - 1) input += " ";//this just appends a space
-    }
-}
-*/
-/*
+var input = process.argv.slice(3).join(" ");
+
+
 //create switch for each commands
 switch (command) {
     case "concert-this":
@@ -39,7 +33,7 @@ switch (command) {
     default:
         console.log("Command you entered is not recognized.");
 }
-*/
+
 //create fucntions for each commands
 
 //----------------------------------------------------------------------------------
@@ -60,16 +54,17 @@ function showArtistEvents(val) {
         //console.log(response);
         var size = Object.keys(response.data).length;
         if (size > 0) {
+            console.log("_________________________________________________________________".red);
             var res = response.data;
             for (var i = 0; i < size; i++) {
-                console.log("_________________________________________________________________");
-                console.log("Artist/Band Name: " + artist);
-                console.log("Venue: " + res[i].venue.name);
-                var address = "Address: " + res[i].venue.city + ", " + res[i].venue.region + ", " + res[i].venue.country;
+                console.log("_________________________________________________________________".blue);
+                console.log("Artist/Band Name: ".green + artist.yellow);
+                console.log("Venue: ".green + res[i].venue.name);
+                var address = "Address: ".green + res[i].venue.city + ", " + res[i].venue.region + ", " + res[i].venue.country;
                 console.log(address);
                 var date = res[i].datetime;
-                console.log("Date: " + moment(date.slice(0, date.indexOf("T"))).format("MM/DD/YYYY"));
-                console.log("_________________________________________________________________");
+                console.log("Date: ".green + moment(date.slice(0, date.indexOf("T"))).format("MM/DD/YYYY"));
+                console.log("_________________________________________________________________".blue);
 
                 //data used for creating HTML page
                 htmlStr += `<div class="card-header">`;
@@ -93,10 +88,12 @@ function showArtistEvents(val) {
                 htmlStr += `</div>`;
                 htmlStr += `</div>`;
             }
+            console.log("_________________________________________________________________".red);
             createHTMLFile(htmlStr, "Events for " + artist);
-            console.log("***********************************************************************************************************************");
-            console.log("*** You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***");
-            console.log("***********************************************************************************************************************");
+            console.log("***********************************************************************************************************************".green);
+            console.log("***".yellow+" You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***".yellow);
+            console.log("***********************************************************************************************************************".green);
+            console.log();
         } else {
             console.log("Sorry! No result found.");
         }
@@ -134,9 +131,10 @@ function showSpotifySong(val) {
         //console.log(data);
         var size = Object.keys(response.tracks.items).length;
         if (size > 0) {
+            console.log("_____________________________________________________________________________________________________________________".red);
             var res = response.tracks.items;
             for (var i = 0; i < size; i++) {
-                console.log("_________________________________________________________________");
+                console.log("_____________________________________________________________________________________________________________________".blue);
                 var artist = res[i].artists;
                 var str = "";
                 var size1 = Object.keys(artist).length;
@@ -145,12 +143,12 @@ function showSpotifySong(val) {
                     str += artist[a].name;
                     if (a != size1 - 1) str += ", ";
                 }
-                console.log("Artist/s: " + str);
-                console.log("Song Name: " + res[i].name);
-                console.log("Spotify URL: " + res[i].external_urls.spotify);
-                console.log("Preview: " + res[i].preview_url);
-                console.log("Album Name: " + res[i].album.name);
-                console.log("_________________________________________________________________");
+                console.log("Artist/s: ".green + str);
+                console.log("Song Name: ".green + res[i].name.yellow);
+                console.log("Spotify URL: ".green + res[i].external_urls.spotify);
+                console.log("Preview: ".green + res[i].preview_url);
+                console.log("Album Name: ".green + res[i].album.name);
+                console.log("_____________________________________________________________________________________________________________________".blue);
 
                 //data used for creating HTML page
                 htmlStr += `<div class="card-header">`;
@@ -178,10 +176,12 @@ function showSpotifySong(val) {
                 htmlStr += `</div>`;
                 htmlStr += `</div>`;
             }
+            console.log("_____________________________________________________________________________________________________________________".red);
             createHTMLFile(htmlStr, "Tracks for " + song);
-            console.log("***********************************************************************************************************************");
-            console.log("*** You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***");
-            console.log("***********************************************************************************************************************");
+            console.log("***********************************************************************************************************************".green);
+            console.log("***".yellow+" You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***".yellow);
+            console.log("***********************************************************************************************************************".green);
+            console.log();
         } else {
             console.log("Sorry! No result found.");
         }
@@ -209,20 +209,22 @@ function showMovieData(val) {
         //console.log(response);
         var size = Object.keys(response.data).length;
         if (size > 0) {
-            console.log("_________________________________________________________________");
-            console.log("Movie Title: " + response.data.Title);
-            console.log("Year: " + response.data.Year);
-            console.log("IMDB Rating: " + response.data.imdbRating);
+            console.log("_____________________________________________________________________________________________________________________".red);
+            console.log("_____________________________________________________________________________________________________________________".blue);
+            console.log("Movie Title: ".green + response.data.Title.yellow);
+            console.log("Year: ".green + response.data.Year);
+            console.log("IMDB Rating: ".green + response.data.imdbRating);
             var rt = response.data.Ratings;
             var result = rt.find(obj => {
                 return obj.Source === "Rotten Tomatoes";
             })
-            console.log("Rotten Tomatoes Rating: " + result.Value);
-            console.log("Produced in Country(s): " + response.data.Country);
-            console.log("Language: " + response.data.Language);
-            console.log("Plot: " + response.data.Plot);
-            console.log("Actors: " + response.data.Actors);
-            console.log("_________________________________________________________________");
+            console.log("Rotten Tomatoes Rating: ".green + result.Value);
+            console.log("Produced in Country(s): ".green + response.data.Country);
+            console.log("Language: ".green + response.data.Language);
+            console.log("Plot: ".green + response.data.Plot);
+            console.log("Actors: ".green + response.data.Actors);
+            console.log("_____________________________________________________________________________________________________________________".blue);
+            console.log("_____________________________________________________________________________________________________________________".red);
 
             //data used for creating HTML page
             htmlStr += `<div class="card-header">`;
@@ -262,9 +264,10 @@ function showMovieData(val) {
             htmlStr += `</div>`;
             htmlStr += `</div>`;
             createHTMLFile(htmlStr, "Movie Data for " + response.data.Title);
-            console.log("***********************************************************************************************************************");
-            console.log("*** You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***");
-            console.log("***********************************************************************************************************************");
+            console.log("***********************************************************************************************************************".green);
+            console.log("***".yellow+" You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***".yellow);
+            console.log("***********************************************************************************************************************".green);
+            console.log();
         } else {
             console.log("Sorry! No result found.");
         }
