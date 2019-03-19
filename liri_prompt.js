@@ -8,14 +8,16 @@ var spotify = new Spotify(keys.spotify);
 
 //create variables
 var command = process.argv[2];
-var input = "";
+var input = process.argv.slice(2).join(" ");
+/*
 for (var i = 0; i < process.argv.length; i++) { //loops through the process.argv
     if (i > 2) { //if index is greater than 2(which is after the command)
         input += process.argv[i]; //append each word
         if (i != (process.argv.length) - 1) input += " ";//this just appends a space
     }
 }
-
+*/
+/*
 //create switch for each commands
 switch (command) {
     case "concert-this":
@@ -37,7 +39,7 @@ switch (command) {
     default:
         console.log("Command you entered is not recognized.");
 }
-
+*/
 //create fucntions for each commands
 
 //----------------------------------------------------------------------------------
@@ -402,7 +404,66 @@ function openResultPage() {
     });
 }
 
+//getAddressByLatLong("33.7205556","-116.2147222");
+/**
+ * Funtion to get address by latitude & longitude
+ * @param {number/string} lat - latitude
+ * @param {number/string} long - longitude
+ * @param {function} callback - callback function to call when a response is received
+ */
+function getAddressByLatLong(lat, long, callback) {
+    var queryUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyDs3kB9GH643iw3aYL1egJilXsG0L39HFo";
+    axios.get(queryUrl).then(function (response) {
+        console.log(response.data.results[0].formatted_address);
+        callback(response.data.results[0].formatted_address);
+    },
+        function (error) {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else if (error.request) {
+                console.log(error.request);
+            } else {
+                console.log("Error", error.message);
+            }
+            console.log(error.config);
+        }
+    );
+}
+
+var type = "";
 var inquirer = require('inquirer');
+inquirer
+    .prompt([
+        {
+            type: "input",
+            message: "What is your command?",
+            name: "command",
+            validate: function (input) {
+                if (input === "c") {
+                    return "Please enter correct command.";
+                }
+                return true;
+            }
+        },
+
+        {
+            type: "input",
+            name: 'topping',
+            message: function (prev) {
+                return prev.command;
+            }
+        },
+
+    ])
+    .then(function (inquirerResponse) {
+
+        console.log("Hello! " + inquirerResponse.input);
+    });
+
+/*
+
 var standard_input = process.stdin;
 standard_input.setEncoding('utf-8');
 console.log("Please select option: [c]concert-this [s]spotify-this-song [m]movie-this [w]do-what-it-says");
@@ -416,7 +477,6 @@ standard_input.on('data', function (data) {
     });
 });
 
-/*
 var readline = require('readline');
 var rl = readline.createInterface({
   input: process.stdin,

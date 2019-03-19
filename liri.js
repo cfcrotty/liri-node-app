@@ -8,14 +8,15 @@ var spotify = new Spotify(keys.spotify);
 
 //create variables
 var command = process.argv[2];
-var input = "";
+var input = process.argv.slice(3).join(" ");
+/*
 for (var i = 0; i < process.argv.length; i++) { //loops through the process.argv
     if (i > 2) { //if index is greater than 2(which is after the command)
         input += process.argv[i]; //append each word
         if (i != (process.argv.length) - 1) input += " ";//this just appends a space
     }
 }
-
+*/
 //create switch for each commands
 switch (command) {
     case "concert-this":
@@ -60,7 +61,8 @@ function showArtistEvents(val) {
         if (size > 0) {
             var res = response.data;
             for (var i = 0; i < size; i++) {
-                console.log("_________________________________________________________________");
+                //console.log(pad(colors.grey("_________________________________________________________________"), 30));
+                //pad(colors.grey('Coffee type: '), 30), answers.coffeType)
                 console.log("Artist/Band Name: " + artist);
                 console.log("Venue: " + res[i].venue.name);
                 var address = "Address: " + res[i].venue.city + ", " + res[i].venue.region + ", " + res[i].venue.country;
@@ -401,3 +403,16 @@ function openResultPage() {
         //console.log(`stderr: ${stderr}`);
     });
 }
+
+/*
+Use these:
+console.log('YOUR ORDER');
+            console.log('------------------');
+
+            console.log(pad(colors.grey('Coffee type: '), 30), answers.coffeType);
+            console.log(pad(colors.grey('Sugar level: '), 30), answers.sugarLevel);
+            console.log(pad(colors.grey('Decaf: '), 30), answers.decaf);
+            console.log(pad(colors.grey('Cold: '), 30), answers.cold);
+            console.log(pad(colors.grey('Served in: '), 30), answers.servedIn);
+            console.log(pad(colors.grey('With stirrer: '), 30), answers.stirrer);
+*/
