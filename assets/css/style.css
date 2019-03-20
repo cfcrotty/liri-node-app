@@ -25,7 +25,7 @@ p {
 .big {
     font-size: 3rem;
     font-weight: 1000;
-    color: #ff4501;
+    color: white; /* #ff4501 */
 }
 .boldTag {
     font-weight: 800;
