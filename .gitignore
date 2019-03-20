@@ -2,3 +2,5 @@ node_modules
 .DS_Store
 .env
 liri_old.js
+index.html
+log.txt
