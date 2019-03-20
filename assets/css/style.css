@@ -71,5 +71,9 @@ p {
     }
 }
 /* END - Media Queries */
+.jumbo2 {
+    background-image: url('../images/bg2.jpg');
+    background-position-y: -320px;
+}
 
 

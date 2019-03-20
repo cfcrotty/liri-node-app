@@ -69,7 +69,7 @@ function switchCommands(command,input) {
             showRandomTextResult();
             break;
         default:
-            console.log("Command you entered is not recognized.");
+            console.log("Command you entered is not recognized.".red.italic);
     }
 }
 
@@ -133,7 +133,7 @@ function showArtistEvents(val) {
             console.log("***********************************************************************************************************************".green);
             console.log();
         } else {
-            console.log("Sorry! No result found.");
+            console.log("Sorry! No result found.".red.italic);
         }
     },
         function (error) {
@@ -220,7 +220,7 @@ function showSpotifySong(val) {
             console.log("***********************************************************************************************************************".green);
             console.log();
         } else {
-            console.log("Sorry! No result found.");
+            console.log("Sorry! No result found.".red.italic);
         }
     }).catch(function (err) {
         console.log('Error occurred: ' + err);
@@ -305,7 +305,7 @@ function showMovieData(val) {
             console.log("***********************************************************************************************************************".green);
             console.log();
         } else {
-            console.log("Sorry! No result found.");
+            console.log("Sorry! No result found.".red.italic);
         }
     },
         function (error) {
@@ -348,10 +348,10 @@ function showRandomTextResult() {
                     showMovieData(str);
                     break;
                 default:
-                    console.log("Please check random.txt. No data found.");
+                    console.log("Please check random.txt. No data found.".red.italic);
             }
         } else {
-            console.log("Please check random.txt. No data found.");
+            console.log("Please check random.txt. No data found.".red.italic);
         }
     });
 }
