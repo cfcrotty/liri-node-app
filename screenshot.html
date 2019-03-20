@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+      .myGallery {
+          width: 23%;
+          margin: 1%;
+          transition: all 2s, transform .5s, box-shadow .5s;
+        }
+
+        .myGallery:hover {
+          box-shadow: 6px 6px 20px rgba(0,0,0,.6);
+          transform: scale(1.02);
+        }
+
+        .myGallery:focus {
+          width: 46%;
+          box-shadow: 12px 12px 25px rgba(0,0,0,.7);
+          transform: none;
+        }
+
+        @media only screen and (max-width: 950px) {
+          .myGallery {
+            width: 37%;
+          }
+        }
+
+        @media only screen and (max-width: 600px) {
+          .myGallery {
+            width: 65%;
+          }
+          .myGallery:focus {
+            width: 100%;
+            margin: 20px 0;
+          }
+        }
+  </style>
+</head>
+<div style="text-align:center;">
+  <h1>LIRI Screenshots</h1>
+  <div style="text-align:center;">
+      <img class="myGallery" tabindex="1" src="assets/images/hotel1.jpeg" alt="Hotel Image">
+      <img class="myGallery" tabindex="2" src="assets/images/hotel2.jpeg" alt="Hotel Image">
+      <img class="myGallery" tabindex="3" src="assets/images/hotel3.jpeg" alt="Hotel Image">
+      <img class="myGallery" tabindex="4" src="assets/images/hotel4.jpeg" alt="Hotel Image">
+      <img class="myGallery" tabindex="5" src="assets/images/hotel5.jpeg" alt="Hotel Image">
+      <img class="myGallery" tabindex="6" src="assets/images/hotel6.jpeg" alt="Hotel Image">
+  </div>
+</div>
+</html>
