@@ -31,6 +31,10 @@ p {
     font-weight: 800;
     text-align: right;
 }
+.div2 {
+    text-align:center; 
+    background-color: lightgray;
+}
 /* Change Bootstrap CSS*/
 .container {
     position: relative;
@@ -49,6 +53,7 @@ p {
 }
 .h3, h3 {
     font-size: 1.2rem;
+    color: orangered;
 }
 .jumbotron {
     padding: 2rem 2rem;
@@ -73,7 +78,7 @@ p {
 /* END - Media Queries */
 .jumbo2 {
     background-image: url('../images/bg2.jpg');
-    background-position-y: -320px;
+    background-position-y: -450px;
 }
 
 

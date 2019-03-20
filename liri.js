@@ -39,18 +39,18 @@ inquirer.prompt([
                 return "Please enter the song name: ".blue.italic;
             } else if (prev.command === "movie-this") {
                 return "Please enter the movie name: ".blue.italic;
-            }else if (prev.command === "do-what-it-says") {
+            } else if (prev.command === "do-what-it-says") {
                 return "Press enter to continue.".blue.italic;
             }
         }
     },
 ]).then(function (inquirerResponse) {
     var input = inquirerResponse.input ? inquirerResponse.input : "";
-    switchCommands(inquirerResponse.command,input);
+    switchCommands(inquirerResponse.command, input);
 });
 
 //create switch for each commands
-function switchCommands(command,input) {
+function switchCommands(command, input) {
     switch (command) {
         case "concert-this":
             logCommands(command, input);
@@ -252,9 +252,10 @@ function showMovieData(val) {
             console.log("           IMDB Rating: ".green.italic.bold + response.data.imdbRating);
             var rt = response.data.Ratings;
             var result = rt.find(obj => {
-                return obj.Source === "Rotten Tomatoes";
+                if (obj.Source === "Rotten Tomatoes") return obj.Source === "Rotten Tomatoes";
+                else return {};
             })
-            console.log("Rotten Tomatoes Rating: ".green.italic.bold + result.Value);
+            if (result.Value) console.log("Rotten Tomatoes Rating: ".green.italic.bold + result.Value);
             console.log("Produced in Country(s): ".green.italic.bold + response.data.Country);
             console.log("              Language: ".green.italic.bold + response.data.Language);
             console.log("                  Plot: ".green.italic.bold + response.data.Plot);
@@ -277,10 +278,12 @@ function showMovieData(val) {
             htmlStr += `<div class="col-md-3 boldTag">IMDB Rating</div>`;
             htmlStr += `<div class="col-md-9">${response.data.imdbRating}</div>`;
             htmlStr += `</div>`;
-            htmlStr += `<div class="row">`;
-            htmlStr += `<div class="col-md-3 boldTag">Rotten Tomatoes Rating</div>`;
-            htmlStr += `<div class="col-md-9">${result.Value}</div>`;
-            htmlStr += `</div>`;
+            if (result.Value) {
+                htmlStr += `<div class="row">`;
+                htmlStr += `<div class="col-md-3 boldTag">Rotten Tomatoes Rating</div>`;
+                htmlStr += `<div class="col-md-9">${result.Value}</div>`;
+                htmlStr += `</div>`;
+            }
             htmlStr += `<div class="row">`;
             htmlStr += `<div class="col-md-3 boldTag">Produced in Country(s)</div>`;
             htmlStr += `<div class="col-md-9">${response.data.Country}</div>`;

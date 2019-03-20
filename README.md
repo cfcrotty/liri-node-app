@@ -55,7 +55,7 @@ Link to Video: <https://cfcrotty.github.io/liri-node-app/screenshot.html>
 
         * Edit the text in random.txt to test out the feature for movie-this and concert-this.
 
-4. After selecting a command, enter the artist/band name, song, or movie or press enter to continue. It will show the results on the terminal and open an HTML file on your default browser.
+4. After selecting a command, enter the artist/band name, song, or movie or press enter to continue. It will show the results on the terminal and open an HTML file on your default browser. If there is no result, it will display "Sorry! No result found.".
 
 
 
