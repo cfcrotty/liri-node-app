@@ -7,7 +7,7 @@ LIRI means Language Interpretation and Recognition Interface. LIRI will be a com
 ![Link to Video](https://cfcrotty.github.io/liri-node-app/screenshot.html)
 
 ![Sample Terminal Image](assets/images/step4.PNG)
-![Sample HTML Image](assets/images/step4.PNG)
+![Sample HTML Image](assets/images/step5.PNG)
 
 ### How to Use:
 1. I am using Node.js packages(axios, colors, dotenv, inquirer, moment, and node-spotify-api) so you need to install dependencies using `npm i` in the terminal
