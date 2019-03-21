@@ -53,19 +53,15 @@ inquirer.prompt([
 function switchCommands(command, input) {
     switch (command) {
         case "concert-this":
-            logCommands(command, input);
             showArtistEvents(input);
             break;
         case "spotify-this-song":
-            logCommands(command, input);
             showSpotifySong(input);
             break;
         case "movie-this":
-            logCommands(command, input);
             showMovieData(input);
             break;
         case "do-what-it-says":
-            logCommands(command);
             showRandomTextResult();
             break;
         default:
@@ -90,9 +86,11 @@ function showArtistEvents(val) {
     var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
     axios.get(queryUrl).then(function (response) {
         //console.log(response);
+        var strLog = "";
         var size = Object.keys(response.data).length;
         if (size > 0 && Array.isArray(response.data)) {
             console.log("_________________________________________________________________".red);
+            strLog += ("_________________________________________________________________");
             var res = response.data;
             for (var i = 0; i < size; i++) {
                 console.log("_________________________________________________________________".blue);
@@ -103,6 +101,13 @@ function showArtistEvents(val) {
                 var date = res[i].datetime;
                 console.log("            Date: ".green.italic.bold + moment(date.slice(0, date.indexOf("T"))).format("MM/DD/YYYY"));
                 console.log("_________________________________________________________________".blue);
+
+                strLog += ("_________________________________________________________________\n");
+                strLog += ("Artist/Band Name: " + artist+"\n");
+                strLog += ("           Venue: " + res[i].venue.name+"\n");
+                strLog += ("         Address: " + address+"\n");
+                strLog += ("            Date: " + moment(date.slice(0, date.indexOf("T"))).format("MM/DD/YYYY")+"\n");
+                strLog += ("_________________________________________________________________"+"\n");
 
                 //data used for creating HTML page
                 htmlStr += `<div class="card-header">`;
@@ -126,7 +131,12 @@ function showArtistEvents(val) {
                 htmlStr += `</div>`;
                 htmlStr += `</div>`;
             }
-            console.log("_________________________________________________________________".red);
+            console.log("_________________________________________________________________".red+"\n");
+            strLog += ("_________________________________________________________________"+"\n");
+            strLog += ("\n\n***********************************************************************************************************************\n\n");
+
+            logCommands(strLog);
+
             createHTMLFile(htmlStr, "Events for " + artist);
             console.log("***********************************************************************************************************************".green);
             console.log("***".yellow + " You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***".yellow);
@@ -166,9 +176,11 @@ function showSpotifySong(val) {
     if (val) song = val;
     spotify.search({ type: 'track', query: song }).then(function (response) {
         //console.log(data);
+        var strLog = "";
         var size = Object.keys(response.tracks.items).length;
         if (size > 0 && Array.isArray(response.tracks.items)) {
             console.log("_____________________________________________________________________________________________________________________".red);
+            strLog += ("_____________________________________________________________________________________________________________________\n");
             var res = response.tracks.items;
             for (var i = 0; i < size; i++) {
                 console.log("_____________________________________________________________________________________________________________________".blue);
@@ -186,6 +198,14 @@ function showSpotifySong(val) {
                 console.log("    Preview: ".green.italic.bold + res[i].preview_url);
                 console.log(" Album Name: ".green.italic.bold + res[i].album.name);
                 console.log("_____________________________________________________________________________________________________________________".blue);
+
+                strLog += ("_____________________________________________________________________________________________________________________\n");
+                strLog += ("   Artist/s: " + str+"\n");
+                strLog += ("  Song Name: "+ res[i].name+"\n");
+                strLog += ("Spotify URL: " + res[i].external_urls.spotify+"\n");
+                strLog += ("    Preview: " + res[i].preview_url+"\n");
+                strLog += (" Album Name: " + res[i].album.name+"\n");
+                strLog += ("_____________________________________________________________________________________________________________________\n");
 
                 //data used for creating HTML page
                 htmlStr += `<div class="card-header">`;
@@ -214,6 +234,11 @@ function showSpotifySong(val) {
                 htmlStr += `</div>`;
             }
             console.log("_____________________________________________________________________________________________________________________".red);
+            strLog += ("_____________________________________________________________________________________________________________________\n");
+            strLog += ("\n\n***********************************************************************************************************************\n\n");
+            
+            logCommands(strLog);
+            
             createHTMLFile(htmlStr, "Tracks for " + song);
             console.log("***********************************************************************************************************************".green);
             console.log("***".yellow + " You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***".yellow);
@@ -243,6 +268,7 @@ function showMovieData(val) {
     var queryUrl = "http://www.omdbapi.com/?apikey=trilogy&t=" + movie;
     axios.get(queryUrl).then(function (response) {
         //console.log(response);
+        var strLog = "";
         var size = Object.keys(response.data).length;
         if (size > 0 && response.data.Title) {
             console.log("_____________________________________________________________________________________________________________________".red);
@@ -262,6 +288,20 @@ function showMovieData(val) {
             console.log("                Actors: ".green.italic.bold + response.data.Actors);
             console.log("_____________________________________________________________________________________________________________________".blue);
             console.log("_____________________________________________________________________________________________________________________".red);
+
+            strLog += ("_____________________________________________________________________________________________________________________\n");
+            strLog += ("_____________________________________________________________________________________________________________________\n");
+            strLog += ("           Movie Title: " + response.data.Title+"\n");
+            strLog += ("                  Year: " + response.data.Year+"\n");
+            strLog += ("           IMDB Rating: " + response.data.imdbRating+"\n");
+            if (result.Value) strLog += ("Rotten Tomatoes Rating: " + result.Value+"\n");
+            strLog += ("Produced in Country(s): " + response.data.Country+"\n");
+            strLog += ("              Language: " + response.data.Language+"\n");
+            strLog += ("                  Plot: " + response.data.Plot+"\n");
+            strLog += ("                Actors: "+ response.data.Actors+"\n");
+            strLog += ("_____________________________________________________________________________________________________________________\n");
+            strLog += ("_____________________________________________________________________________________________________________________\n");
+            strLog += ("\n\n***********************************************************************************************************************\n\n");
 
             //data used for creating HTML page
             htmlStr += `<div class="card-header">`;
@@ -302,6 +342,9 @@ function showMovieData(val) {
             htmlStr += `</div>`;
             htmlStr += `</div>`;
             htmlStr += `</div>`;
+
+            logCommands(strLog);
+
             createHTMLFile(htmlStr, "Movie Data for " + response.data.Title);
             console.log("***********************************************************************************************************************".green);
             console.log("***".yellow + " You can open an HTML page on a browser using this: " + (__dirname) + "/index.html" + " ***".yellow);
@@ -365,11 +408,10 @@ function showRandomTextResult() {
 
 /**
  * Function that logs commands with input from command line
- * @param {string} command
- * @param {string} input 
+ * @param {string} str
  */
-function logCommands(command, input) {
-    fs.appendFile("log.txt", command + " " + input + ", ", function (err) {
+function logCommands(str) {
+    fs.appendFile("log.txt", str , function (err) {
         if (err) {
             console.log("Error: " + err);
         } else {
