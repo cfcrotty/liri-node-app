@@ -90,7 +90,7 @@ function showArtistEvents(val) {
         var size = Object.keys(response.data).length;
         if (size > 0 && Array.isArray(response.data)) {
             console.log("_________________________________________________________________".red);
-            strLog += ("_________________________________________________________________");
+            strLog += ("_________________________________________________________________\n");
             var res = response.data;
             for (var i = 0; i < size; i++) {
                 console.log("_________________________________________________________________".blue);
